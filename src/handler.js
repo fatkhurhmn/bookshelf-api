@@ -76,4 +76,19 @@ const saveBookHandler = (request, h) => {
   return response;
 };
 
-module.exports = { saveBookHandler };
+const getAllBooksHandler = (_, h) => {
+  const booksData = books.map((book) => ({
+    id: book.id, name: book.name, publisher: book.publisher,
+  }));
+
+  const response = h.response({
+    status: 'success',
+    data: {
+      books: booksData,
+    },
+  });
+  response.code(200);
+  return response;
+};
+
+module.exports = { saveBookHandler, getAllBooksHandler };
