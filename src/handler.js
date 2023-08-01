@@ -76,8 +76,28 @@ const saveBookHandler = (request, h) => {
   return response;
 };
 
-const getAllBooksHandler = (_, h) => {
-  const booksData = books.map((book) => ({
+const getAllBooksHandler = (request, h) => {
+  const { name, reading, finished } = request.query;
+
+  let filteredBooks = books;
+  if (name !== undefined) {
+    filteredBooks = filteredBooks.filter(
+      (book) => book.name.toLowerCase().includes(name.toLowerCase()),
+    );
+    console.log(filteredBooks);
+  }
+
+  if (reading !== undefined) {
+    const isReading = reading === '1';
+    filteredBooks = filteredBooks.filter((book) => book.reading === isReading);
+  }
+
+  if (finished !== undefined) {
+    const isFinished = finished === '1';
+    filteredBooks = filteredBooks.filter((book) => book.finished === isFinished);
+  }
+
+  const booksData = filteredBooks.map((book) => ({
     id: book.id, name: book.name, publisher: book.publisher,
   }));
 
