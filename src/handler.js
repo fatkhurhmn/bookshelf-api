@@ -33,8 +33,6 @@ const saveBookHandler = (request, h) => {
     updatedAt,
   };
 
-  books.push(newBook);
-
   if (name === undefined) {
     const response = h.response({
       status: 'fail',
@@ -53,8 +51,8 @@ const saveBookHandler = (request, h) => {
     return response;
   }
 
+  books.push(newBook);
   const isSuccess = books.filter((book) => book.id === id).length > 0;
-
   if (isSuccess) {
     const response = h.response({
       status: 'success',
@@ -84,7 +82,6 @@ const getAllBooksHandler = (request, h) => {
     filteredBooks = filteredBooks.filter(
       (book) => book.name.toLowerCase().includes(name.toLowerCase()),
     );
-    console.log(filteredBooks);
   }
 
   if (reading !== undefined) {
@@ -206,7 +203,7 @@ const deleteBookById = (request, h) => {
   const index = books.findIndex((book) => book.id === bookId);
 
   if (index !== -1) {
-    books.slice(index, 1);
+    books.splice(index, 1);
     const response = h.response({
       status: 'success',
       message: 'Buku berhasil dihapus',
